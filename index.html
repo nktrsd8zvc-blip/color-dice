@@ -517,6 +517,7 @@ function pickWithWeights(colors, hotColor){
   const w = colors.map(c=>{
     let weight = 1;
     if(hotColor && c.n === hotColor.n) weight = 4;
+    if(c.n==='Yellow' || c.n==='Orange') weight *= 0.65;
     return { c, w: weight * (0.55 + Math.random()*0.9) };
   });
   let t=w.reduce((s,x)=>s+x.w,0), r=Math.random()*t;
