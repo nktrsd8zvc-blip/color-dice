@@ -6,17 +6,43 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:sans-serif;min-height:100vh;background:#3aabf0;transition:background .4s;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px 14px 40px;gap:14px;text-align:center}
-h1{color:#fff;font-size:clamp(1.6rem,4vw,3.2rem);font-weight:900;text-shadow:2px 2px 0 rgba(0,0,0,.2);position:relative;z-index:1}
-h2{color:#fff;font-size:clamp(1rem,2vw,1.6rem);font-weight:900;letter-spacing:6px;opacity:.9;position:relative;z-index:1}
+h1{
+  background:linear-gradient(135deg,#fff 0%,#ffe066 40%,#ffb347 70%,#fff 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-size:clamp(2.6rem,7vw,5rem);font-weight:900;letter-spacing:2px;
+  text-shadow:none;filter:drop-shadow(0 0 18px rgba(255,220,80,.9)) drop-shadow(0 4px 0 rgba(0,0,0,.25));
+  position:relative;z-index:1;line-height:1.1;width:100%;text-align:center
+}
+h2{
+  background:linear-gradient(135deg,#ff6b6b 0%,#ff0000 50%,#cc0000 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-size:clamp(1.1rem,3vw,2rem);font-weight:900;letter-spacing:10px;
+  filter:drop-shadow(0 0 14px rgba(255,50,50,.9)) drop-shadow(0 2px 0 rgba(0,0,0,.3));
+  position:relative;z-index:1;margin-top:-4px;width:100%;text-align:center
+}
 .bg-btn{width:28px;height:28px;border-radius:50%;border:2.5px solid rgba(255,255,255,.4);cursor:pointer;font-size:13px;display:flex;align-items:center;justify-content:center}
 .bg-btn.on{border-color:#fff;transform:scale(1.2)}
-.row{display:flex;gap:8px;width:100%;max-width:360px;justify-content:center}
-select{flex:1;padding:10px 8px;border-radius:12px;border:3px solid #1a8fd1;font-weight:800;font-size:.85rem;color:#1a6db5;background:#fff;outline:none}
-.dice{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;min-height:90px;width:100%;max-width:360px}
-.die{width:80px;height:80px;border-radius:14px;border:3px solid #fff;box-shadow:0 4px 14px rgba(0,0,0,.25);display:flex;align-items:center;justify-content:center}
-.die.spin{animation:spin 1s ease}
+.row{display:flex;gap:8px;width:100%;max-width:480px;justify-content:center}
+select{flex:1;padding:12px 10px;border-radius:12px;border:3px solid #1a8fd1;font-weight:900;font-size:1rem;color:#1a6db5;background:#fff;outline:none;letter-spacing:1px;text-transform:uppercase;font-family:sans-serif}
+.dice{display:flex;flex-wrap:nowrap;gap:8px;justify-content:center;align-items:center;min-height:100px;width:100%;max-width:480px}
+.die{
+  width:96px;height:96px;
+  flex:1 1 0;
+  max-width:96px;
+  aspect-ratio:1/1;
+  border-radius:18px;
+  border:4px solid rgba(255,255,255,0.9);
+  box-shadow:0 6px 20px rgba(0,0,0,.35), inset 0 2px 6px rgba(255,255,255,.35), inset -2px -2px 6px rgba(0,0,0,.2);
+  display:flex;align-items:center;justify-content:center;
+  filter:saturate(1.25) brightness(1.1);
+}
+.die.spin{animation:spin .6s ease;background:#888 !important;filter:saturate(0) brightness(0.85)}
+.die.spin .dot{display:none}
+.die.spin::after{content:'?';font-size:2.2rem;font-weight:900;color:#fff;opacity:.9;text-shadow:0 2px 8px rgba(0,0,0,.3)}
 @keyframes spin{0%{transform:rotate(0)scale(1)}30%{transform:rotate(-15deg)scale(.8)}60%{transform:rotate(10deg)scale(1.1)}100%{transform:rotate(0)scale(1)}}
-.dot{width:14px;height:14px;border-radius:50%;background:#fff;opacity:.9}
+.die.reveal{animation:reveal .45s cubic-bezier(.2,1.4,.4,1) both}
+@keyframes reveal{0%{transform:scale(0) rotate(-20deg);opacity:0;filter:brightness(2.5) saturate(2)}40%{transform:scale(1.25) rotate(6deg);opacity:1;filter:brightness(1.6) saturate(1.8)}70%{transform:scale(0.9) rotate(-3deg);filter:brightness(1.2) saturate(1.4)}100%{transform:scale(1) rotate(0);filter:saturate(1.25) brightness(1.1)}}
+.dot{width:16px;height:16px;border-radius:50%;background:#fff;opacity:.95;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 .tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-width:360px}
 .tag{background:rgba(255,255,255,.25);color:#fff;font-size:.75rem;font-weight:700;padding:4px 12px;border-radius:20px;display:flex;align-items:center;gap:5px}
 .tdot{width:10px;height:10px;border-radius:50%;border:1.5px solid rgba(255,255,255,.6)}
@@ -50,17 +76,18 @@ select{flex:1;padding:10px 8px;border-radius:12px;border:3px solid #1a8fd1;font-
 
 /* LAYOUT: main column + colors panel right */
 .page-wrap{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;position:relative;z-index:1}
+@media(min-width:600px){h1,h2{padding-right:212px}}
 
 /* Colors panel RIGHT */
-.colors-panel{background:rgba(0,25,70,.32);backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.28);border-radius:18px;padding:12px 10px;width:128px;flex-shrink:0;display:none}
+.colors-panel{background:rgba(0,25,70,.32);backdrop-filter:blur(14px);border:1.5px solid rgba(255,255,255,.28);border-radius:18px;padding:18px 16px;width:200px;flex-shrink:0;display:none}
 @media(min-width:600px){.colors-panel{display:flex;flex-direction:column;gap:0}}
-.colors-title{font-size:.68rem;font-weight:900;letter-spacing:.2em;color:rgba(255,255,255,.75);text-transform:uppercase;margin-bottom:8px;text-align:center}
-.color-row{display:flex;align-items:center;gap:8px;padding:6px 4px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left}
+.colors-title{font-size:.85rem;font-weight:900;letter-spacing:.2em;color:rgba(255,255,255,.75);text-transform:uppercase;margin-bottom:10px;text-align:center}
+.color-row{display:flex;align-items:center;gap:12px;padding:9px 6px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left}
 .color-row:last-child{border-bottom:none}
 .color-row.matched{background:rgba(255,255,255,.18);border-radius:8px}
-.swatch{width:28px;height:20px;border-radius:6px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35)}
-.cname{font-size:.8rem;font-weight:900;color:#fff}
-.cdesc{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.5)}
+.swatch{width:38px;height:28px;border-radius:8px;flex-shrink:0;border:1.5px solid rgba(255,255,255,.35)}
+.cname{font-size:1rem;font-weight:900;color:#fff}
+.cdesc{font-size:.78rem;font-weight:700;color:rgba(255,255,255,.5)}
 
 /* Colors panel BOTTOM (mobile only) */
 .colors-panel-bottom{width:100%;max-width:360px;background:rgba(255,255,255,.18);border:1.5px solid rgba(255,255,255,.4);border-radius:18px;padding:14px;backdrop-filter:blur(12px);margin-top:0}
@@ -74,6 +101,9 @@ select{flex:1;padding:10px 8px;border-radius:12px;border:3px solid #1a8fd1;font-
 /* brainrot bg canvas */
 #brainrotCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;display:none}
 body.brainrot-bg #brainrotCanvas{display:block}
+/* ghoul bg canvas */
+#ghoulCanvas{position:fixed;inset:0;pointer-events:none;z-index:0;display:none}
+body.ghoul-bg #ghoulCanvas{display:block}
 .foot{color:#fff;font-size:.9rem;font-weight:900;letter-spacing:4px;text-transform:uppercase;border-top:2px solid rgba(255,255,255,.2);padding-top:14px;width:100%;max-width:360px;position:relative;z-index:1}
 
 /* STREAK BADGE */
@@ -129,11 +159,12 @@ body.brainrot-bg #brainrotCanvas{display:block}
     <button class="bg-btn on" style="background:#3aabf0"                                          onclick="bg(this,'#3aabf0')">☀️</button>
     <button class="bg-btn"    style="background:linear-gradient(135deg,#0f0c29,#302b63,#24243e)"  onclick="bg(this,'linear-gradient(160deg,#0f0c29,#302b63,#24243e)')">🌌</button>
     <button class="bg-btn"    style="background:linear-gradient(135deg,#ff6b6b,#ffda77)"          onclick="bg(this,'linear-gradient(160deg,#ff6b6b,#ffda77)')">🌅</button>
-    <button class="bg-btn"    style="background:linear-gradient(135deg,#0a3d0a,#1a6b1a,#00ff88)" onclick="bg(this,'linear-gradient(160deg,#0a3d0a,#1a6b1a,#00ff88)')">🌿</button>
+    <button class="bg-btn"    style="background:linear-gradient(160deg,#0a3d0a,#1a6b1a,#00ff88)" onclick="bg(this,'linear-gradient(160deg,#0a3d0a,#1a6b1a,#00ff88)')">🌿</button>
     <button class="bg-btn"    style="background:linear-gradient(135deg,#1a0033,#6600cc,#ff00ff)" onclick="bg(this,'linear-gradient(160deg,#1a0033,#6600cc,#ff00ff)')">💜</button>
     <button class="bg-btn"    style="background:linear-gradient(135deg,#000000,#ff0040,#ff6600)" onclick="bg(this,'linear-gradient(160deg,#000,#ff0040,#ff6600)')">🔥</button>
     <button class="bg-btn"    style="background:linear-gradient(135deg,#003366,#0066ff,#00ccff)" onclick="bg(this,'linear-gradient(160deg,#003366,#0066ff,#00ccff)')">🌊</button>
     <button class="bg-btn"    style="background:linear-gradient(135deg,#ff006a,#ff6b00,#ffe600,#00e5ff,#a800ff)" onclick="bg(this,'linear-gradient(160deg,#ff006a,#ff6b00,#ffe600,#00e5ff,#a800ff)','brainrot')">🗿</button>
+    <button class="bg-btn"    style="background:linear-gradient(135deg,#0a0000,#3a0000,#8b0000)" onclick="bg(this,'linear-gradient(160deg,#0a0000,#3a0000,#8b0000)','ghoul')">👁️</button>
   </div>
 </div>
 
@@ -141,6 +172,7 @@ body.brainrot-bg #brainrotCanvas{display:block}
 <h2>— Zveriks60 —</h2>
 
 <canvas id="brainrotCanvas"></canvas>
+<canvas id="ghoulCanvas"></canvas>
 
 <!-- page-wrap: main + right panel -->
 <div class="page-wrap">
@@ -174,6 +206,7 @@ body.brainrot-bg #brainrotCanvas{display:block}
     <button class="btn" id="btnRoll" onclick="roll()">🎲 Roll!</button>
     <button class="btn-mega" id="btnMega" onclick="doMegaRoll()">⚡ MEGA ROLL ⚡</button>
     <button class="btn-meow" id="btnMeow" onclick="doMeow(event)">🐱 Мяу!</button>
+
     <!-- mobile colors -->
     <div class="colors-panel-bottom">
       <div class="colors-title-b">🎨 Colors</div>
@@ -189,8 +222,6 @@ body.brainrot-bg #brainrotCanvas{display:block}
 
 </div>
 
-<div class="foot">🍓 Strawberry-жир 🍓</div>
-
 <!-- Mega overlay -->
 <div id="megaOverlay">
   <div class="mega-title">⚡ Mega Roll ⚡</div>
@@ -200,25 +231,26 @@ body.brainrot-bg #brainrotCanvas{display:block}
   <button class="mega-close" id="megaClose" onclick="closeMega()">✓ Close</button>
 </div>
 
+
 <script>
 const COLORS={
   basic:[
-    {n:'Red',h:'#E53935',d:'Fail trade',w:5},
-    {n:'Orange',h:'#F5A623',d:'No Thanks',w:5},
+    {n:'Red',h:'#E53935',d:'L trade',w:5},
+    {n:'Orange',h:'#FF6F00',d:'No Thanks',w:5},
     {n:'Yellow',h:'#F5C400',d:'Deal?',w:5},
     {n:'Green',h:'#2E7D32',d:'Fair Trade',w:5},
     {n:'Blue',h:'#1565C0',d:'Last Offer',w:5},
     {n:'Purple',h:'#8B2FC9',d:'Add More',w:5}
   ],
   all:[
-    {n:'Red',h:'#E53935',d:'Fail trade',w:5},{n:'Orange',h:'#F5A623',d:'No Thanks',w:5},
+    {n:'Red',h:'#E53935',d:'L trade',w:5},{n:'Orange',h:'#FF6F00',d:'No Thanks',w:5},
     {n:'Yellow',h:'#F5C400',d:'Deal?',w:5},{n:'Green',h:'#2E7D32',d:'Fair Trade',w:5},
     {n:'Blue',h:'#1565C0',d:'Last Offer',w:5},{n:'Purple',h:'#8B2FC9',d:'Add More',w:5},
     {n:'Pink',h:'#E91E8C',d:'Wild Card',w:5},{n:'Teal',h:'#00897B',d:'Counter',w:5},
     {n:'Lime',h:'#8BC34A',d:'Go Ahead',w:5}
   ],
   warm:[
-    {n:'Red',h:'#E53935',d:'Fair Trade',w:5},{n:'Orange',h:'#F5A623',d:'No Thanks',w:5},
+    {n:'Red',h:'#E53935',d:'L trade',w:5},{n:'Orange',h:'#FF6F00',d:'No Thanks',w:5},
     {n:'Yellow',h:'#F5C400',d:'Deal?',w:5},{n:'Pink',h:'#E91E8C',d:'Wild Card',w:5},
     {n:'Coral',h:'#FF6F61',d:'Maybe',w:5},{n:'Gold',h:'#FFD700',d:'Jackpot',w:5}
   ],
@@ -231,7 +263,6 @@ const COLORS={
 
 var megaRolling=false;
 
-// ── Sound ──
 var soundMuted=localStorage.getItem('zvk_snd')==='off';
 (function(){if(soundMuted)applyMuteUI();}());
 function applyMuteUI(){
@@ -385,7 +416,7 @@ function playMegaStart(){
 }
 
 function playDiceLand(hex){
-  const map={'#E53935':200,'#F5A623':230,'#F5C400':280,'#2E7D32':320,'#1565C0':380,
+  const map={'#E53935':200,'#FF6F00':230,'#F5C400':280,'#2E7D32':320,'#1565C0':380,
              '#8B2FC9':440,'#E91E8C':400,'#00897B':300,'#8BC34A':350,'#3949AB':360,
              '#0097A7':310,'#FF6F61':260,'#FFD700':290};
   const f=map[hex]||300;
@@ -406,7 +437,6 @@ function playMegaWin(){
   setTimeout(()=>{woodKnock(0);woodKnock(.12);woodKnock(.24);},300);
 }
 
-// streak sound — ascending chime
 function playStreakSound(count){
   if(soundMuted)return;
   const a=ac();if(!a)return;
@@ -471,28 +501,23 @@ function doMeow(e){
   setTimeout(()=>el.remove(),950);
 }
 
-// ── CHAOS ENGINE ──
 var _rollHistory = [];
 
 function buildStreakWeights(colors, n){
-  // Веса НЕ используются совместно — каждый дайс независим через pickWithWeights
-  // Эта функция только решает: будет ли редкий стрик (~7%)
   if(Math.random() < 0.07){
     const recent = _rollHistory.slice(-5);
     const fresh = colors.filter(c=>!recent.includes(c.n));
     const pool = fresh.length > 0 ? fresh : colors;
-    return pool[Math.floor(Math.random()*pool.length)]; // вернём "горячий" цвет
+    return pool[Math.floor(Math.random()*pool.length)];
   }
   return null;
 }
 
-// Каждый дайс получает СВОИ веса независимо
 function pickWithWeights(colors, hotColor){
-  // Если стрик-режим и передан горячий цвет — только тогда буст
   const w = colors.map(c=>{
-    let weight = 1; // все одинаковы по умолчанию — честный рандом
-    if(hotColor && c.n === hotColor.n) weight = 4; // ~4x шанс только в стрик-режиме
-    return { c, w: weight * (0.55 + Math.random()*0.9) }; // шум сглаживает
+    let weight = 1;
+    if(hotColor && c.n === hotColor.n) weight = 4;
+    return { c, w: weight * (0.55 + Math.random()*0.9) };
   });
   let t=w.reduce((s,x)=>s+x.w,0), r=Math.random()*t;
   for(const x of w){ r-=x.w; if(r<=0){ _rollHistory.push(x.c.n); if(_rollHistory.length>20)_rollHistory.shift(); return x.c; } }
@@ -501,16 +526,8 @@ function pickWithWeights(colors, hotColor){
   return last;
 }
 
-function pick(arr){
-  arr.forEach(c=>{ c.w=1+Math.random()*9; });
-  arr[Math.floor(Math.random()*arr.length)].w*=2;
-  let t=arr.reduce((s,c)=>s+c.w,0),r=Math.random()*t;
-  for(const c of arr){r-=c.w;if(r<=0)return c;}
-  return arr[arr.length-1];
-}
-
 function showStreakBadge(count, colorHex){
-  const msgs={3:'🎯 ТРОЙНИК!', 4:'🔥 ЧЕТВЁРКА!', 5:'💥 ВСЕ ПЯТЬ!', 6:'👑 ВСЕ ШЕСТЬ!'};
+  const msgs={3:'🥵 ТРОЙНИЧОК', 4:'🔥 ЧЕТВЁРКА!', 5:'💥 ВСЕ ПЯТЬ!', 6:'👑 ВСЕ ШЕСТЬ!'};
   const msg=msgs[count]||`🔥 ${count}x СТРИК!`;
   const el=document.createElement('div');
   el.className='streak-badge';
@@ -552,14 +569,12 @@ function roll(){
     const c=pickWithWeights(colors, hotColor);
     chosen.push(c);
     const d=document.createElement('div');d.className='die spin';
-    d.style.background='#bbb';
-    d.style.transition='background 0.3s ease';
+    d.style.background=c.h;
     const dot=document.createElement('div');dot.className='dot';
     d.appendChild(dot);area.appendChild(d);
-    setTimeout(()=>{ d.classList.remove('spin'); d.style.background=c.h; },980);
+    setTimeout(()=>{d.classList.remove('spin');d.classList.add('reveal');setTimeout(()=>d.classList.remove('reveal'),500);},700);
   }
 
-  // Count max streak
   const counts={};
   chosen.forEach(c=>counts[c.n]=(counts[c.n]||0)+1);
   const maxCount=Math.max(...Object.values(counts));
@@ -581,12 +596,14 @@ function roll(){
 function bg(btn,val,cls){
   document.body.style.background=val;
   document.body.classList.toggle('brainrot-bg',cls==='brainrot');
+  document.body.classList.toggle('ghoul-bg',cls==='ghoul');
   document.querySelectorAll('.bg-btn').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  if(cls==='brainrot') startBrainrot(); else stopBrainrot();
+  if(cls==='brainrot'){startBrainrot();stopGhoul();}
+  else if(cls==='ghoul'){stopBrainrot();startGhoul();}
+  else{stopBrainrot();stopGhoul();}
 }
 
-// ── BRAINROT CANVAS ──
 var _brainrotAF=null;
 var _brainrotEmojis=['🗿','💀','🤑','😈','🔥','💸','🍕','🧠','👁️','🫠','💅','🤡','📱','🎮','⚡','🌀','👾','🐸','🦆','🍜'];
 var _brainrotParticles=[];
@@ -630,14 +647,87 @@ function stopBrainrot(){
   const cv=document.getElementById('brainrotCanvas');
   cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
 }
+
+var _ghoulAF=null;
+var _ghoulDrops=[];
+var _ghoulEyes=[];
+function startGhoul(){
+  const cv=document.getElementById('ghoulCanvas');
+  cv.width=window.innerWidth;cv.height=window.innerHeight;
+  _ghoulDrops=[];
+  _ghoulEyes=[];
+  for(let i=0;i<40;i++) _ghoulDrops.push(newGhoulDrop(cv,true));
+  for(let i=0;i<6;i++) _ghoulEyes.push(newGhoulEye(cv));
+  function frame(){
+    const ctx=cv.getContext('2d');
+    ctx.clearRect(0,0,cv.width,cv.height);
+    _ghoulEyes.forEach(e=>{
+      e.pulse+=0.04;
+      const alpha=0.12+Math.sin(e.pulse)*0.08;
+      const grd=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.r*2.5);
+      grd.addColorStop(0,`rgba(180,0,0,${alpha})`);
+      grd.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.arc(e.x,e.y,e.r*2.5,0,Math.PI*2);
+      ctx.fillStyle=grd;ctx.fill();
+      ctx.beginPath();ctx.ellipse(e.x,e.y,e.r,e.r*0.6,0,0,Math.PI*2);
+      ctx.fillStyle=`rgba(60,0,0,${alpha*2})`;ctx.fill();
+      const pupilGrd=ctx.createRadialGradient(e.x,e.y,0,e.x,e.y,e.r*0.35);
+      pupilGrd.addColorStop(0,`rgba(255,30,0,${0.5+Math.sin(e.pulse)*0.2})`);
+      pupilGrd.addColorStop(0.5,`rgba(180,0,0,${0.3+Math.sin(e.pulse)*0.1})`);
+      pupilGrd.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.beginPath();ctx.arc(e.x,e.y,e.r*0.35,0,Math.PI*2);
+      ctx.fillStyle=pupilGrd;ctx.fill();
+    });
+    _ghoulDrops.forEach((d,i)=>{
+      d.y+=d.vy;d.vy+=0.07;d.life--;
+      ctx.save();ctx.globalAlpha=Math.min(1,d.life/20)*0.75;
+      ctx.beginPath();
+      ctx.arc(d.x,d.y,d.r,Math.PI,0);
+      ctx.bezierCurveTo(d.x+d.r,d.y,d.x+d.r*0.4,d.y+d.r*2.5,d.x,d.y+d.r*3);
+      ctx.bezierCurveTo(d.x-d.r*0.4,d.y+d.r*2.5,d.x-d.r,d.y,d.x-d.r,d.y);
+      ctx.fillStyle=`rgb(${160+Math.floor(Math.random()*40)},0,0)`;
+      ctx.fill();
+      ctx.restore();
+      if(d.life<=0||d.y>cv.height+40) _ghoulDrops[i]=newGhoulDrop(cv,false);
+    });
+    _ghoulAF=requestAnimationFrame(frame);
+  }
+  if(_ghoulAF) cancelAnimationFrame(_ghoulAF);
+  frame();
+}
+function newGhoulDrop(cv,random){
+  return {
+    x:Math.random()*cv.width,
+    y:random?Math.random()*cv.height:-20,
+    vy:0.5+Math.random()*2,
+    r:2+Math.random()*5,
+    life:100+Math.random()*200
+  };
+}
+function newGhoulEye(cv){
+  return {
+    x:Math.random()*cv.width,
+    y:Math.random()*cv.height,
+    r:30+Math.random()*60,
+    pulse:Math.random()*Math.PI*2
+  };
+}
+function stopGhoul(){
+  if(_ghoulAF){cancelAnimationFrame(_ghoulAF);_ghoulAF=null;}
+  const cv=document.getElementById('ghoulCanvas');
+  cv.getContext('2d').clearRect(0,0,cv.width,cv.height);
+}
 window.addEventListener('resize',()=>{
   if(document.body.classList.contains('brainrot-bg')){
     const cv=document.getElementById('brainrotCanvas');
     cv.width=window.innerWidth;cv.height=window.innerHeight;
   }
+  if(document.body.classList.contains('ghoul-bg')){
+    const cv=document.getElementById('ghoulCanvas');
+    cv.width=window.innerWidth;cv.height=window.innerHeight;
+  }
 });
 
-// ── MEGA ROLL ──
 async function doMegaRoll(){
   if(megaRolling)return;
   megaRolling=true;
@@ -682,7 +772,6 @@ async function doMegaRoll(){
   }
   await sleep(600);
 
-  // Check streak in mega too
   const counts={};
   results.forEach(c=>counts[c.n]=(counts[c.n]||0)+1);
   const maxCount=Math.max(...Object.values(counts));
